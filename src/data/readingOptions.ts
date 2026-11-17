@@ -38,7 +38,6 @@ export const FOCUS_OPTIONS: { id: FocusOptionId; label: string; hint: string }[]
   { id: 'hide-links', label: 'Ocultar otras noticias', hint: 'Quita «Mira aquí», «Lo más visto» y recomendados' },
   { id: 'hide-img', label: 'Ocultar foto principal', hint: 'Deja solo el texto' },
   { id: 'on-ruler', label: 'Guía de renglón', hint: 'Una franja te marca la línea que lees' },
-  { id: 'reduce', label: 'Reducir animaciones', hint: 'Los paneles aparecen sin deslizarse, la página salta sin desplazarse y Notín se queda quieto' },
 ];
 
 /** Velocidades de la voz. delay = multiplicador del tiempo por frase en la simulación */

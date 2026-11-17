@@ -41,7 +41,7 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
     setK(0);
     setChanged(true);
   };
-  const ideaRef = useRef<HTMLDivElement>(null);
+  const ideaRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!changed) return;
     // Lleva la idea nueva a la vista (en el celular el selector queda más abajo)
@@ -75,7 +75,7 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
         </div>
       </div>
 
-      <div className={`idea${changed ? ' idea--changed' : ''}`} aria-live="polite" key={version.id} ref={ideaRef}>
+      <article className={`idea${changed ? ' idea--changed' : ''}`} aria-live="polite" key={version.id} ref={ideaRef}>
         <h3>{idea.title}</h3>
         <p>
           {parts.map((part, n) => n % 2 === 1 ? (
@@ -84,7 +84,6 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
             </button>
           ) : <Fragment key={n}>{part}</Fragment>)}
         </p>
-        <button className="src" type="button" onClick={() => onShowSource(idea.source)}>Ver dónde lo dice la noticia</button>
         {entry && (
           <div className="pop" role="note">
             <b>{entry.term}</b>{entry.definition}
@@ -93,34 +92,40 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
             </div>
           </div>
         )}
-      </div>
+        <div className="idea-actions">
+          <button className="src" type="button" onClick={() => onShowSource(idea.source)}>Ver dónde lo dice</button>
+          <button className="idea-listen" type="button" onClick={() => { onListen(`${idea.title}. ${plain(idea.text)}`); onShowSource(idea.source); }}>
+            <SpeakerIcon size={18} waves={1} />Escuchar
+          </button>
+        </div>
+      </article>
 
-      <p className="ai-note">
-        <SparkleIcon size={16} />
-        <span>Resumen hecho con IA a partir de esta nota. Puede equivocarse: revisa dónde lo dice la noticia.{' '}
-          <button type="button" className="ai-report" onClick={() => onReportError(k)}>Reportar un error en esta idea</button></span>
-      </p>
-
-      <div className="row">
+      <div className="row idea-nav">
         <button className="btn" type="button" disabled={k === 0} onClick={() => setK(k - 1)}>‹ Anterior</button>
         <button className="btn primary" type="button" onClick={() => setK((k + 1) % total)}>
           {k === total - 1 ? 'Volver a la primera' : 'Siguiente ›'}
         </button>
       </div>
-      <div className="row">
-        <button className="btn" type="button" onClick={() => { onListen(`${idea.title}. ${plain(idea.text)}`); onShowSource(idea.source); }}>
-          <SpeakerIcon size={20} waves={1} />Escuchar idea
-        </button>
-        <button className="btn" type="button" onClick={onGoFull}>Ver la noticia</button>
-      </div>
-      <MoreOptions summary="Cambiar versión del resumen">
-        <SegmentedControl<SummaryVersionId>
-          label="Versión del resumen"
-          options={SUMMARY_VERSIONS.map((v) => ({ value: v.id, label: v.label }))}
-          value={version.id}
-          onChange={chooseVersion}
-        />
-        <p className="ver-hint" aria-live="polite">{changed ? `Listo: ahora ves la versión «${version.label}». ` : ''}{version.hint}</p>
+
+      <p className="ai-note">
+        <SparkleIcon size={16} />
+        <span>Hecho con IA: puede equivocarse.{' '}
+          <button type="button" className="ai-report" onClick={() => onReportError(k)}>Reportar un error</button></span>
+      </p>
+
+      <MoreOptions summary="Más opciones">
+        <div className="more-body">
+          <div className="fld"><b>Versión del resumen</b>
+            <SegmentedControl<SummaryVersionId>
+              label="Versión del resumen"
+              options={SUMMARY_VERSIONS.map((v) => ({ value: v.id, label: v.label }))}
+              value={version.id}
+              onChange={chooseVersion}
+            />
+            <p className="ver-hint" aria-live="polite">{changed ? `Listo: ahora ves la versión «${version.label}». ` : ''}{version.hint}</p>
+          </div>
+          <button className="btn" type="button" onClick={onGoFull}>Leer la noticia completa</button>
+        </div>
       </MoreOptions>
     </Pane>
   );

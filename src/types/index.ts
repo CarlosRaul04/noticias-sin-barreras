@@ -2,7 +2,7 @@
 export type ToolId = 'resumen' | 'foco' | 'letra' | 'voz';
 
 /** Interruptores de «Leer sin distracciones» (cada id es también la clase CSS que se aplica) */
-export type FocusOptionId = 'hide-ads' | 'hide-video' | 'hide-links' | 'hide-img' | 'on-ruler' | 'reduce';
+export type FocusOptionId = 'hide-ads' | 'hide-video' | 'hide-links' | 'hide-img' | 'on-ruler';
 export type FocusState = Record<FocusOptionId, boolean>;
 
 export type FontId = 'lexend' | 'atkinson' | 'espaciada' | 'clasica';

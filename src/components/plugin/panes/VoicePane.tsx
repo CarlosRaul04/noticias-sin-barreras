@@ -18,10 +18,13 @@ interface Props {
   onHelp: () => void;
 }
 
-/** Escuchar la nota: la frase que suena se resalta en la noticia */
+/**
+ * Escuchar la nota. Este panel es compacto y no difumina la noticia:
+ * la frase que suena se marca en amarillo y se puede tocar cualquier frase para saltar a ella.
+ */
 export function VoicePane(p: Props) {
   return (
-    <Pane id="voz" visible={p.visible} onClose={p.onClose} onHelp={p.onHelp}>
+    <Pane id="voz" visible={p.visible} onClose={p.onClose} onHelp={p.onHelp} subtitle="La frase que suena se marca en amarillo">
       <div className="player">
         <div className="pl-top">
           <button className="small-round" type="button" aria-label="Frase anterior" onClick={p.onPrev}><ChevronLeftIcon /></button>
@@ -29,17 +32,18 @@ export function VoicePane(p: Props) {
             {p.playing ? <PauseIcon /> : <PlayIcon />}
           </button>
           <button className="small-round" type="button" aria-label="Frase siguiente" onClick={p.onNext}><ChevronRightIcon /></button>
-          <div className="pl-meta pl-meta--right">Frase {p.index + 1} de {p.total}</div>
+          <div className="pl-meta pl-meta--right" aria-live="polite">Frase {p.index + 1} de {p.total}</div>
         </div>
         <div className="prog" aria-hidden="true"><i style={{ width: `${p.progress}%` }} /></div>
-        <div className="fld"><b>Velocidad</b>
+        <div className="pl-speed">
+          <b id="pl-speed-l">Velocidad</b>
           <SegmentedControl<number>
             label="Velocidad"
             options={VOICE_SPEEDS.map((s, i) => ({ value: i, label: s.label }))}
             value={p.speedIndex} onChange={p.onSpeed}
           />
         </div>
-        <p className="pl-meta pl-meta--hint">Toca cualquier frase de la noticia para empezar desde ahí.</p>
+        <p className="pl-meta pl-meta--hint">Toca cualquier frase de la noticia para escuchar desde ahí.</p>
       </div>
     </Pane>
   );

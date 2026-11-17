@@ -1,12 +1,12 @@
 /**
- * ¿La persona pidió menos movimiento? Sí, si activó «Reducir animaciones» en el plugin
- * o si su sistema tiene activada la preferencia de reducir movimiento.
+ * ¿La persona pidió menos movimiento? Se respeta la preferencia «Reducir movimiento»
+ * de su sistema (Windows, macOS, Android o iOS).
  */
 export const prefersLessMotion = () => {
   try {
-    return document.documentElement.classList.contains('reduce') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   } catch { return false; }
 };
 
-/** Desplazamiento suave solo si no se pidió reducir el movimiento */
+/** Desplazamiento suave solo si el sistema no pide reducir el movimiento */
 export const scrollBehavior = (): ScrollBehavior => (prefersLessMotion() ? 'auto' : 'smooth');

@@ -14,6 +14,7 @@ import { Sidebar } from './components/site/Sidebar';
 import { SiteFooter } from './components/site/SiteFooter';
 import { AnchorAd } from './components/site/AnchorAd';
 import { NewsArticle } from './components/site/NewsArticle';
+import { MiniPlayer } from './components/plugin/MiniPlayer';
 import { ReadingBar } from './components/plugin/ReadingBar';
 import { FloatingButton } from './components/plugin/FloatingButton';
 import { ToolSheet } from './components/plugin/ToolSheet';
@@ -45,6 +46,7 @@ export default function App() {
   const [tourBar, setTourBar] = useState(false);
   const [anchorOpen, setAnchorOpen] = useState(true);
   const [helpView, setHelpView] = useState<HelpView | null>(null);
+  const [miniClosed, setMiniClosed] = useState(false);
 
   const reading = useReadingSettings();
   const focus = useFocusOptions();
@@ -116,6 +118,9 @@ export default function App() {
   }, [revealSentence]);
   useEffect(() => () => flashTimers.current.forEach(window.clearTimeout), []);
 
+  // Si vuelve a sonar, el reproductor pequeño reaparece
+  useEffect(() => { if (voice.playing) setMiniClosed(false); }, [voice.playing]);
+
   // La página sigue a la voz
   useEffect(() => {
     if (voice.playing) revealSentence(voice.index);
@@ -172,6 +177,7 @@ export default function App() {
       ref={appRef}
       className={appClass}
       data-open={current ? '' : undefined}
+      data-tool={current ?? undefined}
       data-src={sourceMode ? '' : undefined}
       data-tour-bar={tourBar ? '' : undefined}
       data-help={helpView ? '' : undefined}
@@ -181,7 +187,7 @@ export default function App() {
         <Ad id="billboard" />
         <div className="page">
           <NewsArticle
-            readingIndex={voice.playing ? voice.index : null}
+            readingIndex={voice.playing || current === 'voz' ? voice.index : null}
             flashIndex={flashIndex}
             rulerOn={focus.focus['on-ruler']}
             onSentenceClick={(i) => { if (current === 'voz') voice.playFrom(i); }}
@@ -247,6 +253,17 @@ export default function App() {
         active={{ foco: focus.activeCount > 0, letra: reading.isChanged, voz: voice.playing }}
         onSelect={selectTool}
       />
+
+      {current !== 'voz' && !helpView && !tour.open && !miniClosed && (voice.playing || voice.index > 0) && (
+        <MiniPlayer
+          index={voice.index}
+          total={ARTICLE.sentences.length}
+          playing={voice.playing}
+          onTogglePlay={voice.togglePlay}
+          onOpen={() => openTool('voz')}
+          onClose={() => { voice.stop(); setMiniClosed(true); }}
+        />
+      )}
 
       {reading.canUndo && <UndoToast message="Se restableció la letra y el color" onUndo={reading.undo} />}
 
