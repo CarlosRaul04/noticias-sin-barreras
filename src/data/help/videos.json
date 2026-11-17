@@ -1,0 +1,64 @@
+[
+  {
+    "id": "conoce",
+    "title": "Conoce Lectura fácil",
+    "summary": "Las 4 herramientas y dónde pedir ayuda.",
+    "scenes": [
+      { "text": "Hola, soy Notín. Te muestro Lectura fácil en menos de 1 minuto." },
+      { "text": "Abajo tienes tu barra con 4 herramientas." },
+      { "text": "Resumir, Sin anuncios, Letra y Escuchar. Puedes combinarlas." },
+      { "text": "El punto verde te avisa qué herramienta tiene algo activo." },
+      { "text": "¿Dudas? Toca «?» en cualquier panel para abrir el Centro de ayuda." },
+      { "text": "¡Listo! Ya puedes leer a tu manera." }
+    ]
+  },
+  {
+    "id": "resumir",
+    "title": "Resumir una noticia",
+    "summary": "4 ideas cortas, una a la vez, y cómo revisarlas.",
+    "scenes": [
+      { "text": "Resumir: la noticia en 4 ideas cortas." },
+      { "text": "Toca la pestaña «Resumir»." },
+      { "text": "Verás una idea a la vez. Arriba dice en qué idea vas." },
+      { "text": "Las palabras con «?» tienen explicación. Tócalas." },
+      { "text": "Toca «Ver dónde lo dice la noticia» para revisar la idea." },
+      { "text": "La frase de origen se pinta en la noticia. Deben decir lo mismo." }
+    ]
+  },
+  {
+    "id": "sin-anuncios",
+    "title": "Leer sin distracciones",
+    "summary": "Quita anuncios, video y otras noticias.",
+    "scenes": [
+      { "text": "Sin anuncios: quita lo que te distrae." },
+      { "text": "Así se ve una noticia con anuncios." },
+      { "text": "Toca la pestaña «Sin anuncios»." },
+      { "text": "Enciende solo lo que quieras quitar." },
+      { "text": "Ahora queda solo la noticia." }
+    ]
+  },
+  {
+    "id": "letra",
+    "title": "Cambiar letra y color",
+    "summary": "Combinaciones listas, tamaño y cómo deshacer.",
+    "scenes": [
+      { "text": "Letra: cambia la letra y el color del fondo." },
+      { "text": "Toca la pestaña «Letra»." },
+      { "text": "Elige una combinación lista. Por ejemplo, «Más aire»." },
+      { "text": "El cambio se ve al instante en toda la noticia." },
+      { "text": "¿Te equivocaste? Restablece y tienes 10 segundos para deshacer." }
+    ]
+  },
+  {
+    "id": "escuchar",
+    "title": "Escuchar la nota",
+    "summary": "Una voz lee y resalta la frase que suena.",
+    "scenes": [
+      { "text": "Escuchar: una voz te lee la noticia." },
+      { "text": "Toca la pestaña «Escuchar»." },
+      { "text": "Toca el botón grande para empezar o pausar." },
+      { "text": "La frase que suena se pinta de amarillo." },
+      { "text": "Elige la velocidad que te acomode." }
+    ]
+  }
+]

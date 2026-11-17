@@ -1,0 +1,46 @@
+/* =========================================================================
+   GUÍA DE PRIMER USO CON FOCO (affordances y signifiers)
+   Solo el bloque señalado queda nítido; el resto se difumina y oscurece.
+   Sin rebotes ni parpadeos; Notín saluda 3 veces y se detiene.
+   ========================================================================= */
+.tour{position:fixed;inset:0;z-index:80;pointer-events:none}
+.tour-veil{position:fixed;background:rgba(13,22,41,.55);-webkit-backdrop-filter:blur(6px) saturate(.6);backdrop-filter:blur(6px) saturate(.6);
+  pointer-events:auto;transition:clip-path .2s ease}
+.tour-ring{position:fixed;box-shadow:inset 0 0 0 7px #fff,0 0 0 3px #fff,0 0 0 7px var(--blue);pointer-events:auto;transition:all .2s ease}
+.tour-card{position:fixed;pointer-events:auto;background:#fff;color:var(--ink);border-radius:20px;border:2px solid var(--line);
+  box-shadow:0 24px 60px rgba(13,22,41,.35);padding:20px 20px 14px;font-family:var(--sans);transition:top .2s ease,left .2s ease}
+.tour-card--center{padding:28px 24px 18px}
+.tour-close{position:absolute;top:10px;right:10px;width:44px;height:44px;border:0;border-radius:12px;background:transparent;display:grid;place-items:center;color:var(--muted)}
+.tour-close:hover{background:var(--surface);color:var(--ink)}
+.tour-head{display:flex;align-items:flex-start;gap:12px;padding-right:32px}
+.tour-head .notin{width:48px;height:48px;flex:none;margin-top:-4px}
+.tour-center{display:flex;flex-direction:column;align-items:center;text-align:center}
+.tour-center .notin{width:144px;height:144px}
+.tour-step{margin:0;font-size:14px;font-weight:500;color:var(--blue)}
+.tour-title{margin:0;font-size:19px;font-weight:600;line-height:1.3;color:var(--ink)}
+.tour-center .tour-title{margin-top:8px;font-size:24px;line-height:1.2}
+.tour-body{margin:6px 0 0;font-size:16px;line-height:1.6;color:var(--muted)}
+.tour-center .tour-body{font-size:17px}
+.tour-progress{display:flex;gap:6px;margin-top:16px}
+.tour-progress i{flex:1;height:6px;border-radius:3px;background:#E1E7F0}
+.tour-progress i.on{background:var(--blue)}
+.tour-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+.tour-actions--center{justify-content:center}
+.tour-actions .btn.primary{min-width:150px}
+.tour-skip{display:block;margin:8px auto 0;min-height:40px;padding:0 12px;border:0;background:none;font-size:15px;color:var(--muted);text-decoration:underline;text-underline-offset:4px}
+.tour-skip:hover{color:var(--ink)}
+.tour-arrow{position:absolute;width:18px;height:18px;background:#fff;border:2px solid var(--line);transform:rotate(45deg)}
+.tour-arrow--right{right:-10px;border-left:0;border-bottom:0}
+.tour-arrow--left{left:-10px;border-right:0;border-top:0}
+.tour-arrow--bottom{bottom:-10px;border-left:0;border-top:0}
+.tour-arrow--top{top:-10px;border-right:0;border-bottom:0}
+.tour-bubble{position:relative;margin-bottom:-4px;padding:6px 16px;border-radius:999px;background:var(--blue);color:#fff;font-weight:600;font-size:17px}
+.tour-bubble::after{content:'';position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-top-color:var(--blue);border-bottom:0}
+
+/* Mascota «Notín» */
+.notin-in{animation:notin-in .5s ease-out both}
+@keyframes notin-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.notin-wave{transform-box:view-box;transform-origin:132px 96px;animation:notin-wave .8s ease-in-out .4s 3}
+@keyframes notin-wave{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-22deg)}}
+.notin-blink{transform-box:view-box;transform-origin:82px 78px;animation:notin-blink 3.5s ease-in-out 1.2s 3}
+@keyframes notin-blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}

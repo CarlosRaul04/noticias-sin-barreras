@@ -1,0 +1,24 @@
+{
+  "name": "noticias-sin-barreras",
+  "private": true,
+  "version": "3.1.0",
+  "description": "Noticias sin barreras 3.1: plugin de accesibilidad cognitiva para prensa digital (TDAH, dislexia y autismo nivel 1). Diseño responsive y guía de primer uso.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3000 --host=0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.6.0",
+    "vite": "^7.0.0"
+  }
+}

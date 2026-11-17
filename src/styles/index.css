@@ -1,0 +1,8 @@
+/* Orden de carga: tokens → base → sitio → plugin → controles → guía → ayuda */
+@import './tokens.css';
+@import './base.css';
+@import './site.css';
+@import './plugin.css';
+@import './controls.css';
+@import './tour.css';
+@import './help.css';

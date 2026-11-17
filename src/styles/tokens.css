@@ -1,0 +1,13 @@
+/* TOKENS DE DISEÑO · Noticias sin barreras
+   Azul cobalto #1F5BD8 (acciones) · azul claro #E8EFFC (superficies) · marino #14213D (texto).
+   Las variables --r-* son las de LECTURA: las cambia el usuario desde «Letra y color». */
+:root{
+  --blue:#1F5BD8; --blue-ink:#143F9E; --ink:#14213D; --muted:#4A5873; --soft:#E8EFFC; --line:#C9D8F7; --surface:#F5F8FE; --white:#FFFFFF;
+  --stage:#E4EAF5; --ok:#0B7A4B; --alert:#B42318;
+  --sans:'Lexend','Inter','Segoe UI',system-ui,sans-serif;
+  --serif:Georgia,'Times New Roman',serif;
+  /* lectura (las cambia el usuario) */
+  --r-font:'Lexend','Inter',system-ui,sans-serif; --r-size:18px; --r-lh:1.7; --r-bg:#FFFFFF; --r-ink:#14213D; --r-muted:#4A5873; --r-line:#E1E7F0;
+  --bar-h:76px; --rail-w:76px; --panel-w:384px;
+  color-scheme:light;
+}

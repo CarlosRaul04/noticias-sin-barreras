@@ -1,0 +1,166 @@
+/* SITIO DE NOTICIAS «El Pacífico» (maqueta, no es parte del plugin) */
+.scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--r-bg);color:var(--r-ink);scroll-behavior:smooth;
+  padding-bottom:calc(var(--bar-h) + 28px + env(safe-area-inset-bottom,0px));transition:padding-right .25s ease,background .2s}
+.site{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--r-line);background:var(--r-bg)}
+.site .logo{font-family:var(--serif);font-weight:700;font-size:26px;letter-spacing:-.5px;flex:1;text-align:center;white-space:nowrap}
+.site .ghost{width:44px;height:44px;border:0;background:transparent;border-radius:12px;display:grid;place-items:center}
+.site .sub{background:#14213D;color:#fff;border:0;border-radius:999px;min-height:44px;padding:0 16px;font-size:14px;font-weight:500;white-space:nowrap}
+.sections{display:flex;gap:4px;overflow-x:auto;padding:0 12px;border-bottom:1px solid var(--r-line);scrollbar-width:none}
+.sections a{padding:12px 10px;font-size:14px;color:var(--r-muted);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent}
+.sections a[aria-current]{color:var(--r-ink);border-color:var(--blue);font-weight:600}
+.article{max-width:680px;margin:0 auto;padding:18px 16px 24px;font-family:var(--r-font);font-size:var(--r-size);line-height:var(--r-lh);position:relative}
+.crumbs{font-size:14px;color:var(--blue);display:flex;gap:6px;margin:0 0 10px}
+h1.title{font-size:clamp(26px,6.2cqw,40px);line-height:1.18;letter-spacing:-.4px;margin:0 0 14px;font-weight:700;text-wrap:balance}
+.lede{color:var(--r-muted);margin:0 0 16px;font-size:1.03em}
+.byline{display:flex;align-items:center;gap:12px;padding:12px 0;border-block:1px solid var(--r-line);margin-bottom:16px;font-size:14px}
+.byline img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.byline b{display:block;font-weight:600}
+.byline span{color:var(--r-muted)}
+figure{margin:0 0 16px}
+figure img{width:100%;border-radius:14px;display:block;aspect-ratio:3/2;object-fit:cover}
+figcaption{font-size:13px;color:var(--r-muted);padding-top:6px;line-height:1.4}
+.article p{margin:0 0 1em}
+.s{border-radius:4px;transition:background .2s}
+.s.reading{background:#FFE58A;color:#14213D;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.s.flash{background:#BFD4FF;color:#14213D}
+.video{position:relative;border-radius:14px;overflow:hidden;margin:0 0 16px}
+.video img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
+.video .tag{position:absolute;left:10px;top:10px;background:#B42318;color:#fff;font:600 12px var(--sans);border-radius:6px;padding:3px 8px}
+.video .play{position:absolute;inset:0;margin:auto;width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.foot-note{font-size:13px;color:var(--r-muted);margin-top:8px}
+.hide-img figure{display:none}
+.ruler{position:absolute;left:0;right:0;height:1.7em;background:rgba(31,91,216,.14);border-block:2px solid rgba(31,91,216,.55);pointer-events:none;display:none;z-index:2}
+.on-ruler .ruler{display:block}
+
+/* Espaciado de la letra «Espaciada» (variables que pone «Letra y color») */
+.article{letter-spacing:var(--r-ls,normal);word-spacing:var(--r-ws,normal)}
+.help-row{display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;margin-top:20px;padding-top:12px;border-top:1px solid var(--r-line);font-family:var(--sans);font-size:15px;color:var(--r-muted)}
+
+/* =========================================================================
+   ESTRUCTURA DE DIARIO DIGITAL PERUANO (como El Comercio, La República, Gestión):
+   barra superior, franja «EN VIVO», billboard, columna derecha, anuncios entre párrafos,
+   «MIRA AQUÍ», temas, recomendados, patrocinados y anuncio fijo inferior.
+   Todo esto compite por la atención: es lo que el plugin permite quitar.
+   ========================================================================= */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 16px;font:500 13px var(--sans);color:var(--r-muted);background:var(--r-bg);border-bottom:1px solid var(--r-line)}
+.topbar-links a{color:var(--r-ink);text-decoration:none;font-weight:600}
+.site .search{margin-left:-8px}
+.sub-short{display:inline}.sub-long{display:none}
+.live-strip{display:flex;align-items:center;gap:14px;overflow-x:auto;scrollbar-width:none;padding:9px 16px;font:400 13px var(--sans);white-space:nowrap;border-bottom:1px solid var(--r-line);background:var(--r-bg)}
+.live-strip b{color:#B42318;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.live-strip b i{width:8px;height:8px;border-radius:50%;background:#B42318}
+.live-strip .live-label{font-weight:600;color:var(--r-ink)}
+.live-strip a{color:var(--r-muted);text-decoration:none}
+
+/* Contenedor de nota + columna derecha */
+.page{max-width:680px;margin:0 auto}
+.page .article{padding-bottom:8px}
+
+/* Anuncios (colores del anunciante vienen de data/siteContent.ts) */
+.adslot{position:relative;font-family:var(--sans);line-height:1.35;border-radius:14px;display:flex;align-items:center;gap:12px;padding:22px 16px 14px;margin:0 0 18px}
+.ad-label{position:absolute;top:6px;left:16px;font-size:10px;letter-spacing:.12em;opacity:.85}
+.ad-brand{background:#fff;font-weight:700;border-radius:10px;width:44px;height:44px;display:grid;place-items:center;flex:none}
+.ad-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ad-copy b{font-size:15px}
+.ad-copy span{font-size:13px;opacity:.9}
+.ad-cta{margin-left:auto;border:0;border-radius:10px;min-height:44px;padding:0 14px;font-weight:600;flex:none}
+.ad-billboard{max-width:1120px;margin:14px 16px 4px}
+.ad-billboard .ad-copy b{font-size:17px}
+.ad-box,.ad-tall{flex-direction:column;align-items:flex-start;padding:26px 20px 20px}
+.ad-box .ad-brand,.ad-tall .ad-brand{display:none}
+.ad-box .ad-copy b{font-size:44px;line-height:1}
+.ad-box .ad-cta,.ad-tall .ad-cta{margin:14px 0 0;width:100%}
+.ad-tall{min-height:420px;justify-content:center}
+.ad-tall .ad-copy{align-items:flex-start}
+.ad-tall .ad-copy b{font-size:34px}
+.ad-tall .ad-copy .ad-emoji{font-size:64px;line-height:1;margin:6px 0 10px;order:2}
+.ad-tall .ad-copy span{order:3;font-size:16px}
+/* anuncio fijo inferior: encima de la barra del plugin en móvil */
+.ad-anchor{position:absolute;z-index:15;left:8px;right:8px;margin:0;bottom:calc(var(--bar-h) + 8px + env(safe-area-inset-bottom,0px));background:#fff;color:#14213D;border:1px solid #E1E7F0;box-shadow:0 8px 24px rgba(20,33,61,.18);padding:10px 8px 10px 12px}
+.ad-anchor .ad-label{position:static;color:#5A6880;opacity:1}
+.ad-anchor .ad-copy b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ad-x{margin-left:auto;flex:none;width:44px;height:44px;border:0;background:transparent;border-radius:10px;display:grid;place-items:center;color:#46546B}
+.app.has-anchor .scroller{padding-bottom:calc(var(--bar-h) + 110px + env(safe-area-inset-bottom,0px))}
+
+/* Video en vivo con su título */
+.video-block{margin:0 0 18px}
+.video-block .video{margin:0}
+.video-cap{margin:8px 0 0;font-family:var(--sans);font-size:14px;line-height:1.4;display:flex;flex-direction:column;gap:2px}
+.video-cap span{color:var(--r-muted);font-size:13px}
+
+/* «MIRA AQUÍ» */
+.article .mira{font-family:var(--sans);font-size:16px;line-height:1.5;margin:0 0 1em;padding:10px 0;border-block:1px solid var(--r-line)}
+.mira strong{color:var(--blue)}
+.mira a{color:var(--r-ink)}
+
+/* Después de la nota */
+.np-h2{font:700 20px/1.3 var(--sans);margin:0 0 12px;color:var(--r-ink)}
+.np-rule{display:inline-block;padding-bottom:6px;border-bottom:3px solid var(--blue)}
+.tags,.related,.sponsored{font-family:var(--sans);margin-top:28px}
+.tags ul,.related ul,.sponsored ul{list-style:none;margin:0;padding:0}
+.tags ul{display:flex;flex-wrap:wrap;gap:8px}
+.tags a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1.5px solid var(--r-line);border-radius:999px;color:var(--r-ink);text-decoration:none;font-size:14px}
+.related li,.sponsored li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--r-line)}
+.related small,.sponsored small{display:block;font-size:12px;color:var(--r-muted);margin-bottom:2px}
+.sponsored small{margin:4px 0 0}
+.related a,.sponsored a{color:var(--r-ink);text-decoration:none;font-weight:600;font-size:15px;line-height:1.4}
+.thumb{width:84px;height:60px;border-radius:10px;flex:none;background:#C9D8F7}
+.thumb-1{background:linear-gradient(135deg,#1F5BD8,#76ACF8)}.thumb-2{background:linear-gradient(135deg,#0E6B4F,#7FC8A9)}.thumb-3{background:linear-gradient(135deg,#7A3E00,#E3A35B)}
+.thumb-s1{background:linear-gradient(135deg,#D97706,#FCD34D)}.thumb-s2{background:linear-gradient(135deg,#0E7490,#67E8F9)}.thumb-s3{background:linear-gradient(135deg,#9D174D,#F9A8D4)}
+.sponsored{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;color:#14213D}
+.sponsored-title{margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5A6880}
+.sponsored a{color:#14213D}.sponsored small{color:#5A6880}.sponsored li{border-color:#E1E7F0}
+
+/* Columna derecha (en celular y tablet va después de la nota) */
+.rail{padding:8px 16px 24px;font-family:var(--sans)}
+.most-viewed{margin:8px 0 22px}
+.most-viewed ol{list-style:none;margin:0;padding:0}
+.most-viewed li{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--r-line)}
+.most-viewed li span{font:700 26px/1 var(--sans);color:var(--blue);min-width:22px}
+.most-viewed a{color:var(--r-ink);text-decoration:none;font-size:15px;line-height:1.4;font-weight:500}
+
+/* Pie del diario */
+.site-foot{background:#0D1629;color:#C9D3E3;font:400 14px/1.5 var(--sans);padding:28px 20px 32px;margin-top:24px;text-align:center}
+.site-foot .logo{font-family:var(--serif);font-weight:700;font-size:24px;color:#fff;margin-bottom:6px}
+.site-foot p{margin:0 auto 12px;max-width:560px}
+.site-foot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px}
+.site-foot a{color:#C9D3E3}
+
+/* Lo que quita «Leer sin distracciones» */
+.hide-ads .adslot,.hide-ads .sponsored{display:none}
+.hide-video .video-block{display:none}
+.hide-links .mira,.hide-links .most-viewed,.hide-links .related,.hide-links .tags,.hide-links .live-strip{display:none}
+.rail-empty .rail{display:none}
+
+/* ---------- TABLET (>= 700 px) ---------- */
+@container app (min-width:700px){
+  .topbar{padding-inline:24px}
+  .sub-long{display:inline}.sub-short{display:none}
+  .ad-billboard{margin:16px auto 6px;width:calc(100% - 48px);padding:26px 24px 18px}
+  .rail{max-width:680px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .rail .most-viewed{grid-column:1 / -1;order:-1}
+  .ad-anchor{left:50%;right:auto;transform:translateX(-50%);width:min(520px,calc(100% - 32px));bottom:calc(var(--bar-h) + 30px)}
+}
+/* ---------- ESCRITORIO (>= 1000 px): nota + columna derecha de 300 px ---------- */
+@container app (min-width:1000px){
+  .topbar,.live-strip{padding-inline:max(24px,6cqw)}
+  .page{max-width:1120px;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start}
+  .page .article{max-width:720px;margin:0;padding-inline:0}
+  .rail{display:block;max-width:none;margin:0;padding:32px 0 24px;align-self:stretch}
+  .rail .most-viewed{order:0}
+  .rail-sticky{position:sticky;top:16px}
+  .rail-empty .page{grid-template-columns:minmax(0,1fr)}
+  .rail-empty .page .article{margin:0 auto}
+  .ad-billboard{max-width:1072px;min-height:120px}
+  .ad-anchor{left:24px;transform:none;width:min(728px,calc(100% - 300px));bottom:16px}
+  .app.has-anchor .scroller{padding-bottom:110px}
+  .site-foot{padding:36px 24px}
+}
+/* En celular el botón de los anuncios anchos baja a su propia fila */
+.ad-billboard,.ad-inline{flex-wrap:wrap}
+.ad-billboard .ad-copy,.ad-inline .ad-copy{flex:1 1 180px}
+.ad-billboard .ad-cta,.ad-inline .ad-cta{margin-left:0;width:100%}
+@container app (min-width:700px){
+  .ad-billboard,.ad-inline{flex-wrap:nowrap}
+  .ad-billboard .ad-cta,.ad-inline .ad-cta{margin-left:auto;width:auto}
+}
