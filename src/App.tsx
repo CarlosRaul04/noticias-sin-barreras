@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { scrollBehavior } from './lib/motion';
 import type { ToolId } from './types';
 import { ARTICLE } from './data/article';
 import { TOUR_STEPS, type TourStep } from './data/tourSteps';
@@ -98,7 +99,7 @@ export default function App() {
     if (!scroller || !app || !el) return;
     const fr = app.getBoundingClientRect();
     const r = el.getBoundingClientRect();
-    scroller.scrollTo({ top: scroller.scrollTop + (r.top - fr.top) - fr.height * 0.2, behavior: 'smooth' });
+    scroller.scrollTo({ top: scroller.scrollTop + (r.top - fr.top) - fr.height * 0.2, behavior: scrollBehavior() });
   }, []);
 
   // «Ver dónde lo dice la noticia»: aclara el fondo y marca la frase unos segundos

@@ -82,3 +82,8 @@
   .app[data-tour-bar] .bar{opacity:1;visibility:visible;transform:none}
   .app[data-tour-bar] .fab{display:none}
 }
+
+/* Versión del resumen: etiqueta junto al contador y aviso breve al cambiar */
+.ver-chip{font-weight:500;color:var(--blue-ink)}
+.ver-hint{margin:10px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}
+.idea--changed{box-shadow:0 0 0 3px var(--blue);transition:box-shadow .3s}

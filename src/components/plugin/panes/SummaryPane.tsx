@@ -1,5 +1,7 @@
-import { Fragment, useEffect, useState } from 'react';
-import { GLOSSARY, SUMMARY_IDEAS, SUMMARY_VARIANTS } from '../../../data/summary';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { scrollBehavior } from '../../../lib/motion';
+import { DEFAULT_SUMMARY_VERSION, GLOSSARY, SUMMARY_VERSIONS, getSummaryVersion, type SummaryVersionId } from '../../../data/summary';
+import { useStoredState } from '../../../hooks/useStoredState';
 import { SegmentedControl } from '../../ui/SegmentedControl';
 import { MoreOptions } from '../../ui/MoreOptions';
 import { SparkleIcon, SpeakerIcon } from '../../ui/Icons';
@@ -24,9 +26,29 @@ const plain = (text: string) => text.replace(/\[\[(.+?)\]\]/g, '$1');
 export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, onListen, onReportError }: Props) {
   const [k, setK] = useState(0);
   const [term, setTerm] = useState<string | null>(null);
-  const [variant, setVariant] = useState(SUMMARY_VARIANTS[0]);
-  const idea = SUMMARY_IDEAS[k];
-  const total = SUMMARY_IDEAS.length;
+  // La versión elegida se recuerda (y el formulario de «Reportar un error» la usa)
+  const [versionId, setVersionId] = useStoredState<SummaryVersionId>('version-resumen', DEFAULT_SUMMARY_VERSION);
+  const version = getSummaryVersion(versionId);
+  const ideas = version.ideas;
+  const total = ideas.length;
+  const idea = ideas[Math.min(k, total - 1)];
+  const [changed, setChanged] = useState(false);
+
+  // Al cambiar de versión se vuelve a la primera idea y se marca el cambio un momento
+  const chooseVersion = (id: SummaryVersionId) => {
+    if (id === versionId) return;
+    setVersionId(id);
+    setK(0);
+    setChanged(true);
+  };
+  const ideaRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!changed) return;
+    // Lleva la idea nueva a la vista (en el celular el selector queda más abajo)
+    const r = window.requestAnimationFrame(() => ideaRef.current?.scrollIntoView({ block: 'center', behavior: scrollBehavior() }));
+    const t = window.setTimeout(() => setChanged(false), 1600);
+    return () => { window.cancelAnimationFrame(r); window.clearTimeout(t); };
+  }, [changed]);
 
   // Al cambiar de idea se cierra la explicación abierta
   useEffect(() => setTerm(null), [k]);
@@ -47,13 +69,13 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
   return (
     <Pane id="resumen" visible={visible} onClose={onClose} onHelp={onHelp}>
       <div className="stepper">
-        <span>Idea {k + 1} de {total}</span>
+        <span>Idea {k + 1} de {total} <span className="ver-chip">· {version.label}</span></span>
         <div className="dots" aria-hidden="true">
-          {SUMMARY_IDEAS.map((_, n) => <i key={n} className={n === k ? 'on' : ''} />)}
+          {ideas.map((_, n) => <i key={n} className={n === k ? 'on' : ''} />)}
         </div>
       </div>
 
-      <div className="idea" aria-live="polite">
+      <div className={`idea${changed ? ' idea--changed' : ''}`} aria-live="polite" key={version.id} ref={ideaRef}>
         <h3>{idea.title}</h3>
         <p>
           {parts.map((part, n) => n % 2 === 1 ? (
@@ -92,12 +114,13 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
         <button className="btn" type="button" onClick={onGoFull}>Ver la noticia</button>
       </div>
       <MoreOptions summary="Cambiar versión del resumen">
-        <SegmentedControl
+        <SegmentedControl<SummaryVersionId>
           label="Versión del resumen"
-          options={SUMMARY_VARIANTS.map((v) => ({ value: v, label: v }))}
-          value={variant}
-          onChange={setVariant}
+          options={SUMMARY_VERSIONS.map((v) => ({ value: v.id, label: v.label }))}
+          value={version.id}
+          onChange={chooseVersion}
         />
+        <p className="ver-hint" aria-live="polite">{changed ? `Listo: ahora ves la versión «${version.label}». ` : ''}{version.hint}</p>
       </MoreOptions>
     </Pane>
   );

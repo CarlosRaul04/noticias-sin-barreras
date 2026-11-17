@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { prefersLessMotion } from '../../lib/motion';
 import type { TourStep } from '../../data/tourSteps';
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '../ui/Icons';
 import { Mascot } from './Mascot';
@@ -26,11 +27,7 @@ type Hole = { top: number; left: number; right: number; bottom: number; r: numbe
 const PAD = 8;
 const GAP = 16;
 
-const reducedMotion = () => {
-  try {
-    return document.documentElement.classList.contains('reduce') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  } catch { return false; }
-};
+const reducedMotion = prefersLessMotion;
 
 /** ¿El bloque se ve en esta pantalla? (el botón flotante, por ejemplo, solo existe en escritorio) */
 const isVisible = (el: Element | null): el is HTMLElement => {

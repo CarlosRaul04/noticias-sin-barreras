@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { HelpTarget } from '../../data/help/types';
-import { SUMMARY_IDEAS } from '../../data/summary';
+import { DEFAULT_SUMMARY_VERSION, getSummaryVersion, type SummaryVersionId } from '../../data/summary';
 import { newCaseNumber, todayLabel, useStoredState } from '../../hooks/useStoredState';
 import { ArrowLeftIcon, ClockIcon, FlagIcon, MailIcon, OpenBookIcon, SearchIcon } from '../ui/Icons';
 import { DraftNote, ErrorSummary, RadioCards, SelectField, TextArea, TextField } from '../ui/FormFields';
@@ -96,6 +96,8 @@ function ReportError({ back, idea, onSent }: { back: React.ReactNode; idea?: num
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState<SupportCase | null>(null);
   const set = (k: keyof typeof EMPTY_ERR) => (v: string) => setF({ ...f, [k]: v });
+  const [versionId] = useStoredState<SummaryVersionId>('version-resumen', DEFAULT_SUMMARY_VERSION);
+  const version = getSummaryVersion(versionId);
   if (done) return <Sent back={back} c={done} extra="Si la idea estaba mal, la corregimos y lo verás en el resumen." />;
 
   const submit = () => {
@@ -105,7 +107,7 @@ function ReportError({ back, idea, onSent }: { back: React.ReactNode; idea?: num
     if (f.email && !/^\S+@\S+\.\S+$/.test(f.email)) e['er-email'] = 'Revisa el correo: debe tener la forma nombre@correo.com.';
     setErrors(e);
     if (Object.keys(e).length) return;
-    const c: SupportCase = { number: newCaseNumber('ERR'), kind: 'Error del resumen', title: SUMMARY_IDEAS[Number(f.idea)]?.title ?? '', date: todayLabel(), promise: 'Lo revisamos y corregimos en un plazo máximo de 24 horas.' };
+    const c: SupportCase = { number: newCaseNumber('ERR'), kind: 'Error del resumen', title: `${version.ideas[Number(f.idea)]?.title ?? ''} (versión ${version.label})`, date: todayLabel(), promise: 'Lo revisamos y corregimos en un plazo máximo de 24 horas.' };
     onSent(c); reset(); setDone(c);
   };
 
@@ -116,7 +118,7 @@ function ReportError({ back, idea, onSent }: { back: React.ReactNode; idea?: num
       <p className="hc-muted">Gracias por avisar. Así el resumen mejora para todas las personas.</p>
       <ErrorSummary errors={errors} />
       <SelectField id="er-idea" label="¿Qué idea tiene el error?" required value={f.idea} onChange={set('idea')} error={errors['er-idea']}
-        options={SUMMARY_IDEAS.map((s, i) => ({ value: String(i), label: `Idea ${i + 1}: ${s.title}` }))} />
+        options={version.ideas.map((s, i) => ({ value: String(i), label: `Idea ${i + 1}: ${s.title}` }))} />
       <RadioCards id="er-kind" label="¿Qué está mal?" required value={f.kind} onChange={set('kind')} error={errors['er-kind']} options={[
         { value: 'inventado', label: 'Dice algo que la noticia no dice' },
         { value: 'equivocado', label: 'Un dato está equivocado', desc: 'Por ejemplo, un número o un lugar.' },

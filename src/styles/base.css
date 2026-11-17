@@ -13,5 +13,5 @@ button{font:inherit;color:inherit;cursor:pointer}
   padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 
 /* «Reducir animaciones» (interruptor del plugin) y preferencia del sistema */
-.reduce *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+.reduce *,.reduce *::before,.reduce *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
