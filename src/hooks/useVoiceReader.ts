@@ -17,16 +17,42 @@ const canSpeak = () => {
 };
 
 /** Lee un texto suelto (definición de un término, una idea del resumen). Devuelve false si no hay voz. */
-export function speakOnce(text: string, rate = 1): boolean {
-  if (!canSpeak()) return false;
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'es-PE';
-  u.rate = rate;
-  const v = spanishVoice();
-  if (v) u.voice = v;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(u);
-  return true;
+/**
+ * Voz corta («Escuchar» una idea o una definición) que se puede detener.
+ * speakingId dice qué se está leyendo, para que ese botón cambie a «Detener».
+ */
+export function useSpeakOnce() {
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const current = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const stop = useCallback(() => {
+    const u = current.current;
+    if (u) { u.onend = null; u.onerror = null; current.current = null; }
+    try { if (canSpeak()) window.speechSynthesis.cancel(); } catch { /* sin voz */ }
+    setSpeakingId(null);
+  }, []);
+
+  const speak = useCallback((id: string, text: string, rate = 1): boolean => {
+    if (!canSpeak()) return false;
+    stop();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'es-PE';
+    u.rate = rate;
+    const v = spanishVoice();
+    if (v) u.voice = v;
+    const done = () => { if (current.current === u) { current.current = null; setSpeakingId(null); } };
+    u.onend = done;
+    u.onerror = done;
+    current.current = u;
+    window.speechSynthesis.speak(u);
+    setSpeakingId(id);
+    return true;
+  }, [stop]);
+
+  // Al salir de la página no sigue hablando
+  useEffect(() => stop, [stop]);
+
+  return { speakingId, speak, stop };
 }
 
 /**

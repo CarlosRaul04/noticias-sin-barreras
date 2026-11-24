@@ -129,3 +129,8 @@
 @container app (min-width:1000px){
   .mini-player{left:auto;right:24px;transform:none;width:380px;bottom:96px}
 }
+
+/* Mientras suena la voz, el botón cambia a «Detener» y se distingue claramente */
+.idea-listen--stop{background:var(--ink)!important;color:#fff!important;padding:0 14px}
+.idea-listen--stop:hover{background:#000!important}
+.btn-stop{color:var(--alert)!important}

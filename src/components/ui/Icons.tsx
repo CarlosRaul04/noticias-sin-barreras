@@ -36,6 +36,9 @@ export const HelpIcon = ({ size = 22, ...p }: P) => (
 export const PlayIcon = ({ size = 28, ...p }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}><path d="M7 4l13 8-13 8z" /></svg>
 );
+export const StopIcon = ({ size = 20, ...p }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}><rect x="6" y="6" width="12" height="12" rx="2" /></svg>
+);
 export const PauseIcon = ({ size = 28, ...p }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
     <rect x="6" y="4" width="4.5" height="16" rx="1" /><rect x="13.5" y="4" width="4.5" height="16" rx="1" />

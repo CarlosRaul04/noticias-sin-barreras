@@ -4,7 +4,7 @@ import { DEFAULT_SUMMARY_VERSION, GLOSSARY, SUMMARY_VERSIONS, getSummaryVersion,
 import { useStoredState } from '../../../hooks/useStoredState';
 import { SegmentedControl } from '../../ui/SegmentedControl';
 import { MoreOptions } from '../../ui/MoreOptions';
-import { SparkleIcon, SpeakerIcon } from '../../ui/Icons';
+import { SparkleIcon, SpeakerIcon, StopIcon } from '../../ui/Icons';
 import { Pane } from './Pane';
 
 interface Props {
@@ -14,7 +14,12 @@ interface Props {
   /** Señala en la noticia la frase que respalda la idea */
   onShowSource: (sentence: number) => void;
   onGoFull: () => void;
-  onListen: (text: string) => void;
+  /** Lee en voz alta un texto corto; id identifica qué botón lo pidió */
+  onListen: (id: string, text: string) => void;
+  /** Qué se está leyendo ahora (null si nada) */
+  speakingId: string | null;
+  /** Detiene la voz */
+  onStopListening: () => void;
   /** Abre el Centro de ayuda en «Reportar un error» con esta idea elegida */
   onReportError: (idea: number) => void;
 }
@@ -23,7 +28,7 @@ interface Props {
 const plain = (text: string) => text.replace(/\[\[(.+?)\]\]/g, '$1');
 
 /** Resumen en 4 ideas, una a la vez. Cada idea enlaza con la frase de la noticia que la respalda. */
-export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, onListen, onReportError }: Props) {
+export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, onListen, speakingId, onStopListening, onReportError }: Props) {
   const [k, setK] = useState(0);
   const [term, setTerm] = useState<string | null>(null);
   // La versión elegida se recuerda (y el formulario de «Reportar un error» la usa)
@@ -33,6 +38,12 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
   const total = ideas.length;
   const idea = ideas[Math.min(k, total - 1)];
   const [changed, setChanged] = useState(false);
+  const ideaId = `idea-${version.id}-${k}`;
+
+  // Al pasar a otra idea o versión, la voz de la idea anterior se calla
+  useEffect(() => {
+    if (speakingId?.startsWith('idea-') && speakingId !== ideaId) onStopListening();
+  }, [ideaId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Al cambiar de versión se vuelve a la primera idea y se marca el cambio un momento
   const chooseVersion = (id: SummaryVersionId) => {
@@ -65,6 +76,7 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
 
   const parts = idea.text.split(/\[\[(.+?)\]\]/g); // impares = términos
   const entry = term ? GLOSSARY[term] : null;
+  const termId = `term-${term ?? ''}`;
 
   return (
     <Pane id="resumen" visible={visible} onClose={onClose} onHelp={onHelp}>
@@ -88,15 +100,25 @@ export function SummaryPane({ visible, onClose, onHelp, onShowSource, onGoFull, 
           <div className="pop" role="note">
             <b>{entry.term}</b>{entry.definition}
             <div className="pop-actions">
-              <button className="btn quiet" type="button" onClick={() => onListen(`${entry.term}. ${entry.definition}`)}>Escuchar definición</button>
+              {speakingId === termId ? (
+                <button className="btn quiet btn-stop" type="button" onClick={onStopListening}><StopIcon size={16} />Detener la voz</button>
+              ) : (
+                <button className="btn quiet" type="button" onClick={() => onListen(termId, `${entry.term}. ${entry.definition}`)}>Escuchar definición</button>
+              )}
             </div>
           </div>
         )}
         <div className="idea-actions">
           <button className="src" type="button" onClick={() => onShowSource(idea.source)}>Ver dónde lo dice</button>
-          <button className="idea-listen" type="button" onClick={() => { onListen(`${idea.title}. ${plain(idea.text)}`); onShowSource(idea.source); }}>
-            <SpeakerIcon size={18} waves={1} />Escuchar
-          </button>
+          {speakingId === ideaId ? (
+            <button className="idea-listen idea-listen--stop" type="button" onClick={onStopListening} aria-label="Detener la voz">
+              <StopIcon size={16} />Detener
+            </button>
+          ) : (
+            <button className="idea-listen" type="button" onClick={() => { onListen(ideaId, `${idea.title}. ${plain(idea.text)}`); onShowSource(idea.source); }}>
+              <SpeakerIcon size={18} waves={1} />Escuchar
+            </button>
+          )}
         </div>
       </article>
 

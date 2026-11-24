@@ -5,7 +5,7 @@ import { ARTICLE } from './data/article';
 import { TOUR_STEPS, type TourStep } from './data/tourSteps';
 import { useReadingSettings } from './hooks/useReadingSettings';
 import { useFocusOptions } from './hooks/useFocusOptions';
-import { speakOnce, useVoiceReader } from './hooks/useVoiceReader';
+import { useSpeakOnce, useVoiceReader } from './hooks/useVoiceReader';
 import { useGuidedTour } from './hooks/useGuidedTour';
 import { useAnnouncer } from './hooks/useAnnouncer';
 import { SiteHeader } from './components/site/SiteHeader';
@@ -51,6 +51,7 @@ export default function App() {
   const reading = useReadingSettings();
   const focus = useFocusOptions();
   const voice = useVoiceReader(ARTICLE.sentences);
+  const once = useSpeakOnce();
   const tour = useGuidedTour();
   const { message, announce } = useAnnouncer();
 
@@ -131,9 +132,17 @@ export default function App() {
     scrollerRef.current?.scrollTo({ top: 0 });
   };
 
-  const listen = (text: string) => {
-    if (!speakOnce(text)) announce('Este navegador no tiene voz disponible.');
+  // «Escuchar» una idea o una definición: se puede detener con el mismo botón
+  const listen = (id: string, text: string) => {
+    const say = () => { if (!once.speak(id, text)) announce('Este navegador no tiene voz disponible.'); };
+    // Si «Escuchar la nota» estaba sonando, primero se detiene y luego habla la idea
+    if (voice.playing) { voice.stop(); window.setTimeout(say, 80); } else say();
   };
+  const stopListening = () => { once.stop(); announce('Voz detenida.'); };
+
+  // Si empieza «Escuchar la nota» o se cierra el resumen, se calla la voz corta
+  useEffect(() => { if (voice.playing) once.stop(); }, [voice.playing, once.stop]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (current !== 'resumen') once.stop(); }, [current, once.stop]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ---------- guía ----------
   const startTour = useCallback(() => {
@@ -211,6 +220,8 @@ export default function App() {
           onShowSource={showSource}
           onGoFull={goFull}
           onListen={listen}
+          speakingId={once.speakingId}
+          onStopListening={stopListening}
           onReportError={(idea) => openHelp({ section: 'contacto', id: 'error-resumen', idea })}
         />
         <FocusPane

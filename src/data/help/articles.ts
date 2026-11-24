@@ -33,6 +33,7 @@ export const ARTICLES: HelpArticle[] = [
       'Toca la pestaña «Resumir».',
       'Verás una idea a la vez. Arriba dice en qué idea vas, por ejemplo «Idea 1 de 4».',
       'Toca «Siguiente» para pasar a la próxima idea.',
+      'Toca «Escuchar» para oír la idea. Mientras suena, el botón cambia a «Detener» para callar la voz cuando quieras.',
       'En «Más opciones» puedes elegir otra versión del resumen (Breve, Lenguaje claro o 60 segundos) o leer la noticia completa.',
     ],
     tip: 'El resumen lo hace una inteligencia artificial y puede equivocarse. Revisa siempre «Ver dónde lo dice».',
