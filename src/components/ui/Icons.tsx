@@ -36,6 +36,14 @@ export const HelpIcon = ({ size = 22, ...p }: P) => (
 export const PlayIcon = ({ size = 28, ...p }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}><path d="M7 4l13 8-13 8z" /></svg>
 );
+/** Pulgar arriba («me gusta»). El pulgar abajo es el mismo dibujo girado. */
+export const ThumbUpIcon = ({ size = 24, ...p }: P) => (
+  <svg {...stroke(size, 1.8)} {...p}>
+    <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z" />
+    <path d="M7 10l4.2-7.1a1.8 1.8 0 0 1 3.3 1.2L13.8 9H19a2 2 0 0 1 2 2.3l-1.3 8A2 2 0 0 1 17.7 21H7" />
+  </svg>
+);
+export const ThumbDownIcon = ({ size = 24, ...p }: P) => <ThumbUpIcon size={size} {...p} style={{ transform: 'rotate(180deg)', ...p.style }} />;
 export const StopIcon = ({ size = 20, ...p }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}><rect x="6" y="6" width="12" height="12" rx="2" /></svg>
 );
